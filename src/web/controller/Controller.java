@@ -3,6 +3,7 @@ package web.controller;
 
 import commons.Page;
 import domain.Customer;
+import exception.IdIsNullEmpty;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
@@ -46,6 +47,51 @@ public class Controller extends HttpServlet {
             editUI(req, resp);
         }else if("deleOne".equals(op)){
             deleOne(req, resp);
+        }else  if("editCustomer".equals(op)){
+            editCustomer(req, resp);
+        }
+    }
+
+    // 更新用户信息
+    private void editCustomer(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        CustomerFormBean bean = FillBeanUtil.fillBean(req, CustomerFormBean.class);
+        if (!bean.validate()){
+            req.setAttribute("formbean", bean);
+            req.getRequestDispatcher("/editCustomers.jsp").forward(req, resp);
+            return;
+        }else {
+            ConvertUtils.register(new DateLocaleConverter(), Date.class);
+            Customer customer = new Customer();
+            try {
+                BeanUtils.copyProperties(customer, bean);
+            } catch (Exception e) {
+                req.getRequestDispatcher("服务器忙!").forward(req, resp);
+                return;
+            }
+
+            // 处理爱好
+            String hobbies[] = bean.getHobbies();
+            if (hobbies != null && hobbies.length > 0){
+                StringBuffer sb = new StringBuffer();
+                for (int i=0; i<hobbies.length;i++){
+                    if (i>0){
+                        sb.append(",");
+                    }
+                    sb.append(hobbies[i]);
+                }
+                customer.setHobby(sb.toString());
+            }
+//            service.addCustomer(customer);
+            try {
+                service.updateCustomer(customer);
+            } catch (IdIsNullEmpty idIsNullEmpty) {
+//                idIsNullEmpty.printStackTrace();
+                throw new RuntimeException("客户的id丢失了");
+            }
+            String path = req.getContextPath();
+            // 重定向跳转到首页
+            resp.sendRedirect(req.getScheme()+"://"+req.getServerName()+":"+req.getServerPort());
+            return;
         }
     }
 
@@ -72,8 +118,8 @@ public class Controller extends HttpServlet {
             // 回显
             req.setAttribute("formBean",formBean);
             req.getRequestDispatcher("/addCustomer.jsp").forward(req, resp);
-
             return;
+
         }else {
             // 填充模型: 生日的类型不匹配, 爱好也不匹配
             ConvertUtils.register(new DateLocaleConverter(), Date.class);

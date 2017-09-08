@@ -72,7 +72,7 @@
                                 <td nowrap="nowrap">${c.type}</td>
                                 <td nowrap="nowrap">${c.description}</td>
                                 <td nowrap="nowrap">
-                                    <a href="${pageContext.request.contextPath}/servlet/Controller/editCustomers.jsp?op=editUI?customerId=${c.id}">修改</a>
+                                    <a href="servlet/Controller?op=editUI&customerId=${c.id}">修改</a>
                                     <a href="">删除</a>
                                 </td>
 
@@ -92,7 +92,7 @@
     function deleOne(customerID) {
         var sure = window.confirm("确定要删除么?")
         if (sure){
-            window.location.href = "${pageContext.request.contextPath}/servlet/Controller?op=deleOne?customerId="+customerID;
+            window.location.href = "${pageContext.request.contextPath}/servlet/Controller?op=deleOne&customerId="+customerID;
         }
     }
 </script>

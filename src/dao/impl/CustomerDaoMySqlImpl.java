@@ -4,10 +4,7 @@ import dao.CustomerDao;
 import domain.Customer;
 import util.JDBCUtil;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -167,9 +164,29 @@ public class CustomerDaoMySqlImpl implements CustomerDao {
     public List findPageRecodes(int startIndex, int pageSize) {
         try {
             connection = JDBCUtil.getConnection();
+
+//            Connection.TRANSACTION_NONE  : 0;
+//            Connection.TRANSACTION_READ_UNCOMMITTED  : 1
+//            Connection.TRANSACTION_READ_COMMITTED  :2
+//            Connection.TRANSACTION_REPEATABLE_READ  : 4
+//            Connection.TRANSACTION_SERIALIZABLE     : 8
+            // 设置隔离的级别
+//            connection.setTransactionIsolation(Connection.TRANSACTION_NONE);
+//            connection.setAutoCommit(false);    // 开启事务
+//            Savepoint savepoint = null; // 设置回滚点
+
+//            在事务中可以添加多条语句
+
             statement = connection.prepareStatement("select * FROM customers limit ?,?");
             statement.setInt(1, startIndex);
             statement.setInt(2, pageSize);
+//            // 将语句添加到事务中
+//            statement.addBatch();
+//            statement.executeBatch();   // 提交事务
+
+            // 回滚点的初始化
+//            savepoint = connection.setSavepoint("a");
+
             resultSet = statement.executeQuery();
 
             List<Customer> customers = new ArrayList<Customer>();
@@ -191,6 +208,12 @@ public class CustomerDaoMySqlImpl implements CustomerDao {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
+//            try {
+//                //
+//                connection.commit();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
             JDBCUtil.release(resultSet, statement, connection);
         }
     }

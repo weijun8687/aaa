@@ -21,7 +21,6 @@ public class JDBCUtil {
             url = properties.getProperty("url");
             user = properties.getProperty("user");
             password = properties.getProperty("password");
-
             Class.forName(driverClass);
 
         } catch (Exception e) {

@@ -20,6 +20,8 @@
 <body>
 
 <form action="${pageContext.request.contextPath}/servlet/Controller?op=editCustomer" method="post">
+
+   <input value="${c.id}" type="hidden" name="id">
     <table border="1" width="438">
         <tr>
             <td>姓名:</td>
@@ -30,8 +32,8 @@
         <tr>
             <td>性别:</td>
             <td>
-                <%--<input type="radio" name="gender" value="male" ${c.gender=='male'?'checked="checked"':'' }> 男--%>
-                <%--<input type="radio" name="gender" value="female" ${c.gender=='female'?'checked="checked"':''}> 女--%>
+                <input type="radio" name="gender" value="male" ${c.gender=='male'?'checked="checked"':'' }> 男
+                <input type="radio" name="gender" value="female" ${c.gender=='female'?'checked="checked"':''}> 女
             </td>
         </tr>
         <tr>
@@ -58,17 +60,17 @@
         <tr>
             <td>爱好:</td>
             <td>
-                <%--<input type="checkbox" name="hobbies" value="篮球" ${fn:contains(c.hobby,'篮球')?'checked="checked"':''}>篮球--%>
-                <%--<input type="checkbox" name="hobbies" value="排球" ${fn:contains(c.hobby,'排球')?'checked="checked"':''}>排球--%>
-                <%--<input type="checkbox" name="hobbies" value="足球" ${fn:contains(c.hobby,'足球')?'checked="checked"':''}> 足球--%>
+                <input type="checkbox" name="hobbies" value="篮球" ${fn:contains(c.hobby,'篮球')?'checked="checked"':''}>篮球
+                <input type="checkbox" name="hobbies" value="排球" ${fn:contains(c.hobby,'排球')?'checked="checked"':''}>排球
+                <input type="checkbox" name="hobbies" value="足球" ${fn:contains(c.hobby,'足球')?'checked="checked"':''}> 足球
             </td>
         </tr>
 
         <tr>
             <td>类型:</td>
             <td>
-                <%--<input type="radio" name="type" value="VIP" ${c.type="='VIP'?'checked=checked':''"}>VIP--%>
-                <%--<input type="radio" name="type" value="VVIP" ${c.type="='VIP'?'checked=checked':''"}>VVIP--%>
+                <input type="radio" name="type" value="VIP" ${c.type=='VIP'?'checked=checked':''}>VIP
+                <input type="radio" name="type" value="VVIP" ${c.type=='VVIP'?'checked=checked':''}>VVIP
             </td>
         </tr>
 
